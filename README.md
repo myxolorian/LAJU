@@ -46,4 +46,4 @@ CI (`.github/workflows/ci.yml`) menjalankan hal yang sama di setiap PR.
 
 Fondasi (Fase 0) dibuat langsung di `main`. Setelah itu: satu branch per fitur, nama pakai nomor task di Papan Tugas Laju (Notion), mis. `feat/t7-form-pendaftaran`.
 Semua perubahan masuk ke `main` lewat Pull Request yang direview; tidak ada push langsung ke `main`.
-Detail lengkap: [docs/ALUR-GIT.md](docs/ALUR-GIT.md).
+Detail lengkap: [docs/ALUR-GIT.md](docs/ALUR-GIT.md). Aturan menulis kode: [docs/ATURAN-KODE.md](docs/ATURAN-KODE.md).
