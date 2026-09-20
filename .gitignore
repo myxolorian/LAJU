@@ -1,0 +1,36 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Secrets & env (never commit)
+.env
+.env.*
+!.env.example
+
+# BE (Laravel)
+/BE/vendor/
+/BE/node_modules/
+/BE/public/build/
+/BE/public/hot
+/BE/public/storage
+/BE/storage/*.key
+/BE/storage/pail
+/BE/database/*.sqlite
+/BE/database/*.sqlite-journal
+/BE/.phpunit.cache/
+/BE/.phpunit.result.cache
+/BE/auth.json
+
+# FE (Vite + React)
+/FE/node_modules/
+/FE/dist/
+/FE/dist-ssr/
+*.local
+
+# logs
+*.log
+npm-debug.log*

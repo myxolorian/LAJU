@@ -1,0 +1,22 @@
+/* Design tokens Laju — jangan ubah nilai warna tanpa keputusan brand. */
+:root {
+  --ink: #1b231f;
+  --paper: #f1f3ee;
+  --accent: #c1502e; /* terracotta */
+  --accent-2: #2f6f5e; /* teal */
+  --line: #dad6c8;
+
+  --danger: #a3341a;
+  --surface: #fbfbf8;
+
+  --font-heading: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+  --font-body: 'Source Serif 4', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+  --radius: 4px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+}
