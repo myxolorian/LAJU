@@ -12,18 +12,23 @@ LAJU/
 
 ## Prasyarat
 
-- PHP 8.3+, Composer 2 (ekstensi: mbstring, pdo_sqlite, intl, bcmath)
+- PHP 8.3+, Composer 2 (ekstensi: mbstring, pdo_mysql, pdo_sqlite, intl, bcmath)
+- MySQL (mis. lewat Laragon — nyalakan MySQL dari Laragon sebelum `php artisan migrate`)
 - Node 22.12+ (lihat `.nvmrc`), npm
+
+`pdo_sqlite` tetap dipakai untuk test (`phpunit.xml` mengarah ke SQLite in-memory, terpisah dari DB dev), jadi dev lokal boleh pakai MySQL tanpa mengubah cara test jalan.
 
 ## Jalankan lokal
 
 ```bash
+# Nyalakan MySQL (mis. lewat aplikasi Laragon), lalu buat database sekali:
+#   mysql -uroot -e "CREATE DATABASE laju CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
 # API  → http://localhost:8000
 cd BE
 composer install
-cp .env.example .env
+cp .env.example .env   # sudah default ke MySQL: DB_DATABASE=laju, DB_USERNAME=root, DB_PASSWORD=
 php artisan key:generate
-touch database/database.sqlite   # dev memakai SQLite
 php artisan migrate
 php artisan serve
 
@@ -32,6 +37,8 @@ cd FE
 npm install
 npm run dev
 ```
+
+Tes manual API tanpa Postman diinstal: `docs/postman/Laju-API.postman_collection.json` (import ke Postman), atau `bash scripts/smoke-api.sh http://localhost:8000` dari terminal.
 
 ## Lint & test
 
