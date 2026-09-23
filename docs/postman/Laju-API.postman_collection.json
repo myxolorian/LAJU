@@ -1,0 +1,137 @@
+{
+  "info": {
+    "name": "Laju API (lokal)",
+    "description": "Koleksi tes manual untuk BE Laravel Laju. Import file ini ke Postman.\n\nUrutan pakai: jalankan 'Health check' dulu (pastikan server hidup), lalu 'Daftar Klub Baru' (token otomatis tersimpan ke variable {{token}}), lalu 'Me' dan 'Logout' bisa langsung dipakai. 'Login' berguna kalau mau login dengan akun yang sudah ada.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health check",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/up", "host": ["{{base_url}}"], "path": ["up"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('server hidup (200)', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Daftar Klub Baru",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"club_name\": \"Klub Uji Postman\",\n  \"sport_type\": \"sepak bola\",\n  \"name\": \"Tester Postman\",\n  \"email\": \"{{$randomEmail}}\",\n  \"password\": \"postman-test-12345\",\n  \"password_confirmation\": \"postman-test-12345\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/register-club",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "register-club"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('berhasil dibuat (201)', () => pm.response.to.have.status(201));",
+              "const body = pm.response.json();",
+              "pm.test('role = admin', () => pm.expect(body.user.club_members[0].role).to.eql('admin'));",
+              "pm.collectionVariables.set('token', body.token);",
+              "pm.collectionVariables.set('last_email', body.user.email);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{last_email}}\",\n  \"password\": \"postman-test-12345\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/login",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "login"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('login sukses (200)', () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set('token', pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Me",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "{{base_url}}/api/auth/me", "host": ["{{base_url}}"], "path": ["api", "auth", "me"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('terautentikasi (200)', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "{{base_url}}/api/auth/logout", "host": ["{{base_url}}"], "path": ["api", "auth", "logout"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('token dicabut (204)', () => pm.response.to.have.status(204));",
+              "pm.collectionVariables.set('token', '');"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
